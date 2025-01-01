@@ -19,7 +19,7 @@ variable "instance_name_prefix" {
 resource "aws_security_group" "example_sg" {
   name        = "example-security-group"
   description = "Allow HTTP, HTTPS, and RDP inbound traffic"
-  vpc_id      = "vpc-09fddab5bc141401d" # Replace with your VPC ID
+  vpc_id      = "your vpc" # Replace with your VPC ID
 
   ingress {
     from_port   = 80
@@ -57,7 +57,7 @@ resource "aws_security_group" "example_sg" {
 # EC2 Instance
 resource "aws_instance" "example" {
    count = var.instance_count
-   ami = "ami-070198ebf4affc3e7"
+   ami = "your ami here"
    instance_type = var.instance_type
 
    vpc_security_group_ids = [aws_security_group.example_sg.id]
