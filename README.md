@@ -73,10 +73,10 @@ This repository contains Terraform scripts to create and manage AWS infrastructu
 ```
 terraform-aws-setup/
 │
-├── mumbai-config/
+├── basic_module_1/
 │   └── main.tf           # Terraform script for Mumbai region
 │
-├── north-virginia-config/
+├── vpcmodule/
 │   └── main.tf           # Terraform script for North Virginia setup
 │
 └── README.md             # Documentation
