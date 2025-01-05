@@ -2,8 +2,9 @@ provider "aws" {
   region = "us-east-1" # North Virginia
 }
 
+# VPC
 resource "aws_vpc" "main" {
-  cidr_block = "1.0.0.0/16"
+  cidr_block           = "10.0.0.0/16"
   enable_dns_support   = true
   enable_dns_hostnames = true
   tags = {
@@ -11,6 +12,7 @@ resource "aws_vpc" "main" {
   }
 }
 
+# Internet Gateway
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
   tags = {
@@ -18,9 +20,10 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
+# Subnets
 resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = "1.0.1.0/24"
+  cidr_block              = "10.0.1.0/24"
   map_public_ip_on_launch = true
   availability_zone       = "us-east-1a"
   tags = {
@@ -30,7 +33,7 @@ resource "aws_subnet" "public" {
 
 resource "aws_subnet" "private" {
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = "1.0.2.0/24"
+  cidr_block              = "10.0.2.0/24"
   map_public_ip_on_launch = false
   availability_zone       = "us-east-1a"
   tags = {
@@ -38,6 +41,7 @@ resource "aws_subnet" "private" {
   }
 }
 
+# NAT Gateway
 resource "aws_eip" "nat" {
   vpc = true
 }
@@ -50,6 +54,7 @@ resource "aws_nat_gateway" "nat_gw" {
   }
 }
 
+# Route Tables
 resource "aws_route_table" "public_rt" {
   vpc_id = aws_vpc.main.id
   tags = {
@@ -86,34 +91,25 @@ resource "aws_route_table_association" "private_subnet_association" {
   route_table_id = aws_route_table.private_rt.id
 }
 
+# Instances
 resource "aws_instance" "public_instance" {
-  ami           = "ami-0c02fb55956c7d316" # Amazon Linux 2 AMI for us-east-1
+  ami           = "ami-XXXXXXX" # Replace with actual AMI ID
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.public.id
-  key_name      = "keypar28"
+  key_name      = "your-key-name" # Replace with actual key pair name
 
   tags = {
     Name = "public-instance"
   }
-
-  provisioner "local-exec" {
-    command = "echo Public instance created"
-  }
 }
 
 resource "aws_instance" "private_instance" {
-  ami           = "ami-0c02fb55956c7d316" # Amazon Linux 2 AMI for us-east-1
+  ami           = "ami-XXXXXXX" # Replace with actual AMI ID
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.private.id
-  key_name      = "keypar28"
-
-  associate_public_ip_address = false # Disable public IP
+  key_name      = "your-key-name" # Replace with actual key pair name
 
   tags = {
     Name = "private-instance"
-  }
-
-  provisioner "local-exec" {
-    command = "echo Private instance created"
   }
 }

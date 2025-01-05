@@ -1,25 +1,40 @@
 provider "aws" {
-    region = "ap-south-1" # Mumbai region
+  region = "ap-south-1" # Mumbai region
 }
 
 # Variables
 variable "instance_count" {
-    default = 2
+  description = "Number of instances to create"
+  default     = 2
 }
 
 variable "instance_type" {
-    default = "t2.micro"
+  description = "Type of instance to launch"
+  default     = "t2.micro"
 }
 
 variable "instance_name_prefix" {
-    default = "ex-"
+  description = "Prefix for the instance names"
+  default     = "example-"
+}
+
+variable "vpc_id" {
+  description = "VPC ID where resources will be created"
+}
+
+variable "ami_id" {
+  description = "AMI ID for the EC2 instances"
+}
+
+variable "key_name" {
+  description = "AWS Key Pair name to associate with instances"
 }
 
 # Security Group to Allow HTTP, HTTPS, and RDP
 resource "aws_security_group" "example_sg" {
   name        = "example-security-group"
   description = "Allow HTTP, HTTPS, and RDP inbound traffic"
-  vpc_id      = "your vpc" # Replace with your VPC ID
+  vpc_id      = var.vpc_id
 
   ingress {
     from_port   = 80
@@ -56,24 +71,24 @@ resource "aws_security_group" "example_sg" {
 
 # EC2 Instance
 resource "aws_instance" "example" {
-   count = var.instance_count
-   ami = "your ami here"
-   instance_type = var.instance_type
+  count               = var.instance_count
+  ami                 = var.ami_id
+  instance_type       = var.instance_type
+  key_name            = var.key_name
+  vpc_security_group_ids = [aws_security_group.example_sg.id]
 
-   vpc_security_group_ids = [aws_security_group.example_sg.id]
-
-   tags = {
-      Name = "${var.instance_name_prefix}${count.index + 1}"
-   }
+  tags = {
+    Name = "${var.instance_name_prefix}${count.index + 1}"
+  }
 }
 
-# Output
+# Outputs
 output "instance_ids" {
-    description = "IDs of EC2 instances"
-    value = aws_instance.example.*.id
+  description = "IDs of EC2 instances"
+  value       = aws_instance.example.*.id
 }
 
 output "public_ips" {
-    description = "Public IPs of EC2 instances"
-    value = aws_instance.example.*.public_ip
+  description = "Public IPs of EC2 instances"
+  value       = aws_instance.example.*.public_ip
 }
