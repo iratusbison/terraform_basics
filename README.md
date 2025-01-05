@@ -38,7 +38,7 @@ This repository contains Terraform scripts to create and manage AWS infrastructu
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/terraform_basics/terraform-aws-setup.git
+   git clone https://github.com/iratusbison/terraform_basics.git
    cd terraform-aws-setup
    ```
 
