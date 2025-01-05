@@ -39,12 +39,12 @@ This repository contains Terraform scripts to create and manage AWS infrastructu
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/iratusbison/terraform_basics.git
-   cd terraform-aws-setup
+   
    ```
 
 2. **Navigate to the desired configuration folder:**
-   - **Mumbai Region Configuration**: `mumbai-config/`
-   - **North Virginia Configuration**: `north-virginia-config/`
+   - **Mumbai Region Configuration**: `basic_module_1/`
+   - **North Virginia Configuration**: `vpcmodule/`
 
 3. **Update the `variables` in `main.tf`:**
    - Replace placeholder values:
@@ -117,6 +117,5 @@ Contributions are welcome! Please submit a pull request for improvements.
 
 ---
 
-## License
-This project is licensed under the MIT License. See `LICENSE` for details.
+
 
